@@ -8,17 +8,17 @@ module.exports = {
       transparent: 'transparent',
       black: colors.black,
       white: colors.white,
-      gray: colors.trueGray,
+      gray: colors.neutral,
       red: colors.red,
     },
     extend: {
       colors: {
-        'dark-blue': '#15AFD0',
-        'light-blue': '#1CC8EE',
-        'grayscale-line': '#E7E7E7',
-        'grayscale-label': '#7F818C',
-        'grayscale-placeholder': '#C4C4C4',
-        'title-active': '#0B0D11',
+        'dark-blue': '#15afd0',
+        'light-blue': '#1cc8ee',
+        'grayscale-line': '#e7e7e7',
+        'grayscale-label': '#7f818c',
+        'grayscale-placeholder': '#c4c4c4',
+        'title-active': '#0b0d11',
       },
       screens: {
         xs: '360px',
@@ -51,7 +51,7 @@ module.exports = {
     },
   },
   plugins: [
-    plugin(function ({ addUtilities }) {
+    plugin(({ addUtilities }) => {
       const containerProps = {
         width: '100%',
         paddingLeft: '1.5rem',
