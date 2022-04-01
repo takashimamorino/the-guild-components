@@ -100,7 +100,7 @@ export const SchemaPage: FC<ISchemaPageProps> = ({
         <Editor {...editorData[1]} icon={marketplaceAssets.caret}>
           <ExecutableDocumentEditor
             schema={schemaObj}
-            defaultValue={editorData[1].operations!}
+            defaultValue={editorData[1].operations}
           />
         </Editor>
 

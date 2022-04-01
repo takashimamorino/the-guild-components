@@ -1,3 +1,5 @@
+// import type { StorybookConfig } from '@storybook/core-common';
+
 module.exports = {
   stories: [
     '../packages/*/src/**/*.stories.mdx',
@@ -6,7 +8,6 @@ module.exports = {
   addons: [
     '@storybook/addon-links',
     '@storybook/addon-essentials',
-    '@storybook/addon-postcss',
     {
       name: '@storybook/addon-postcss',
       options: {
@@ -17,7 +18,7 @@ module.exports = {
     },
   ],
   typescript: {
-    reactDocgen: 'none',
+    reactDocgen: false,
   },
   babel(options) {
     const { plugins = [] } = options;

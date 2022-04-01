@@ -1,8 +1,6 @@
-/* eslint-disable no-console */
 const semver = require('semver');
 const cp = require('child_process');
 const { basename } = require('path');
-
 const { read: readConfig } = require('@changesets/config');
 const readChangesets = require('@changesets/read').default;
 const assembleReleasePlan =

@@ -1,4 +1,6 @@
-import React, {
+import {
+  FC,
+  ChangeEvent,
   useEffect,
   useState,
   useRef,
@@ -6,45 +8,33 @@ import React, {
   createElement,
 } from 'react';
 import algoliaSearch from 'algoliasearch/lite';
-
 import {
   InstantSearch,
   connectHits,
   connectSearchBox,
   connectStateResults,
 } from 'react-instantsearch-dom';
-
-import {
+import type {
   Hit,
   SearchBoxProvided,
   StateResultsProvided,
 } from 'react-instantsearch-core';
-
 import { useDebouncedCallback } from 'use-debounce';
-
 import { Modal } from './Modal';
-
-import {
-  SearchButton,
-  SearchForm,
-  SearchResults,
-  SearchHit,
-} from './SearchBar.styles';
-
-import { ISearchBarProps } from '../types/components';
+import { SearchButton, SearchHit } from './SearchBar.styles';
+import type { ISearchBarProps } from '../types/components';
 import { searchBarThemedIcons } from '../helpers/assets';
 import { toggleLockBodyScroll } from '../helpers/modals';
 import { useThemeContext } from '../helpers/theme';
 import { algoliaConfig } from '../configs';
+import { CloseIcon, SearchIcon } from './Icon';
 
 const algoliaClient = algoliaSearch(algoliaConfig.appID, algoliaConfig.apiKey, {
   hosts: algoliaConfig.hosts,
 });
 
 interface ResultDoc {
-  hierarchy: {
-    [level: string]: string | null;
-  };
+  hierarchy: Record<string, string | null>;
   anchor?: string;
   content?: string;
   url: string;
@@ -83,13 +73,13 @@ function useIcons() {
   return searchBarThemedIcons(isDarkTheme || false);
 }
 
-function getPropertyByPath(obj: any, path: string): any {
+function getPropertyByPath(obj: any, path: string) {
   const parts = path.split('.');
 
   return parts.reduce((current, key) => current && current[key], obj);
 }
 
-const Snippet: React.FC<{
+const Snippet: FC<{
   hit: Hit<ResultDoc>;
   attribute: string;
   tagName?: string;
@@ -103,7 +93,7 @@ const Snippet: React.FC<{
   });
 };
 
-const SearchBox: React.FC<
+const SearchBox: FC<
   SearchBoxProvided & {
     accentColor: string;
     placeholder: string;
@@ -112,12 +102,13 @@ const SearchBox: React.FC<
 > = ({ currentRefinement, refine, accentColor, placeholder, isModalOpen }) => {
   const searchRef = useRef<HTMLInputElement>(null);
   const [query, setQuery] = useState(currentRefinement);
-  const icons = useIcons();
+
   const debouncedRefine = useDebouncedCallback((value: string) => {
     refine(value);
   }, 500);
+
   const onChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
+    (event: ChangeEvent<HTMLInputElement>) => {
       const value = event.currentTarget.value;
 
       setQuery(value);
@@ -127,15 +118,47 @@ const SearchBox: React.FC<
   );
 
   useEffect(() => {
-    if (isModalOpen && searchRef.current) {
-      searchRef.current.focus();
+    if (isModalOpen) {
+      searchRef.current?.focus();
     }
   }, [isModalOpen]);
 
   return (
-    <SearchForm accentColor={accentColor}>
-      <form noValidate action="" role="search">
-        <img src={icons.search} height="30" width="30" alt="Search icon" />
+    <form
+      noValidate
+      action=""
+      role="search"
+      className="
+        sticky
+        -top-6
+        z-10
+        -m-6
+        bg-white
+        p-6
+        shadow-sm
+        font-default
+        dark:bg-gray-900
+      "
+    >
+      <div
+        className="
+          flex
+          w-full
+          items-center
+          gap-x-1
+          rounded-lg
+          border-2
+          bg-gray-50
+          p-2.5
+          text-lg
+          text-gray-500
+          [border-color:var(--accentColor)]
+          dark:bg-gray-800
+          dark:text-gray-300
+        "
+        style={{ '--accentColor': accentColor }}
+      >
+        <SearchIcon />
         <input
           aria-autocomplete="both"
           autoComplete="off"
@@ -149,36 +172,57 @@ const SearchBox: React.FC<
           ref={searchRef}
           value={query}
           onChange={onChange}
-        ></input>
+          className="
+            mx-2
+            grow
+            border-0
+            bg-transparent
+            outline-none
+            placeholder:text-gray-500
+            dark:placeholder:text-gray-300
+          "
+        />
         {currentRefinement && (
-          <button type="button" onClick={() => refine('')}>
-            <img src={icons.close} height="34" width="34" alt="Clear icon" />
+          <button
+            type="button"
+            onClick={() => refine('')}
+            className="
+              cursor-pointer
+              border-0
+              bg-transparent
+              p-0
+              transition
+              duration-200
+              ease-in-out
+              hover:opacity-70
+            "
+          >
+            <CloseIcon />
           </button>
         )}
-      </form>
-    </SearchForm>
+      </div>
+    </form>
   );
 };
 
-const StateResults: React.FC<StateResultsProvided<ResultDoc>> = ({
+const StateResults: FC<StateResultsProvided<ResultDoc>> = ({
   searchState,
   searchResults,
   children,
 }) => {
-  let content;
-
-  if (searchState && searchResults && !searchResults.nbHits) {
-    content = searchResults.query.length ? (
+  const content = searchState &&
+    searchResults &&
+    !searchResults.nbHits &&
+    searchResults.query.length > 0 && (
       <span>
         No results for <strong>&quot;{searchState.query}&quot;</strong>.
       </span>
-    ) : null;
-  }
+    );
 
-  return <SearchResults>{content || children}</SearchResults>;
+  return <div className="mt-9">{content || children}</div>;
 };
 
-const Hits: React.FC<{ hits: Hit<any>[]; accentColor: string }> = ({
+const Hits: FC<{ hits: Hit<any>[]; accentColor: string }> = ({
   hits,
   accentColor,
 }) => {
@@ -203,11 +247,11 @@ const Hits: React.FC<{ hits: Hit<any>[]; accentColor: string }> = ({
   const transformIcon = (item: Hit<ResultDoc>) => {
     if (item.anchor) {
       return icons.hashtag;
-    } else if (item.content) {
-      return icons.content;
-    } else {
-      return icons.page;
     }
+    if (item.content) {
+      return icons.content;
+    }
+    return icons.page;
   };
 
   const groupedHits = transformItems(hits);
@@ -237,11 +281,7 @@ const Hits: React.FC<{ hits: Hit<any>[]; accentColor: string }> = ({
               );
             } else if (
               subHit.hierarchy[subHit.type] &&
-              (subHit.type === 'lvl2' ||
-                subHit.type === 'lvl3' ||
-                subHit.type === 'lvl4' ||
-                subHit.type === 'lvl5' ||
-                subHit.type === 'lvl6')
+              ['lvl2', 'lvl3', 'lvl4', 'lvl5', 'lvl6'].includes(subHit.type)
             ) {
               content = (
                 <>
@@ -296,7 +336,7 @@ const Hits: React.FC<{ hits: Hit<any>[]; accentColor: string }> = ({
   );
 };
 
-export const SearchBar: React.FC<ISearchBarProps> = ({
+export const SearchBar: FC<ISearchBarProps> = ({
   accentColor,
   title,
   placeholder,
@@ -304,13 +344,12 @@ export const SearchBar: React.FC<ISearchBarProps> = ({
   onHandleModal,
 }) => {
   const [modalOpen, setModalOpen] = useState(false);
-  const icons = useIcons();
 
-  const handleModal = (state: boolean) => {
+  const handleModal = useCallback((state: boolean) => {
     toggleLockBodyScroll(state);
     setModalOpen(state);
-    onHandleModal && onHandleModal(state);
-  };
+    onHandleModal?.(state);
+  }, []);
 
   const CustomSearchBox = connectSearchBox(SearchBox);
   const CustomStateResults = connectStateResults(StateResults);
@@ -320,11 +359,10 @@ export const SearchBar: React.FC<ISearchBarProps> = ({
     <>
       <SearchButton
         accentColor={accentColor}
-        isFull={isFull || false}
+        isFull={isFull}
         onClick={() => handleModal(true)}
       >
-        <img src={icons.search} height="18" width="18" alt="Search icon" />
-        <span>{placeholder}</span>
+        {placeholder}
       </SearchButton>
       <Modal
         title={title}

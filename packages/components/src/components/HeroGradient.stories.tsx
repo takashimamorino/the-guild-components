@@ -1,8 +1,7 @@
 import React from 'react';
-import { Story, Meta } from '@storybook/react/types-6-0';
-import { IHeroGradientProps } from '../types/components';
+import type { Story, Meta } from '@storybook/react/types-6-0';
+import type { IHeroGradientProps } from '../types/components';
 import { dummyHeroGradient } from '../helpers/dummy';
-
 import { HeroGradient } from './HeroGradient';
 
 export default {

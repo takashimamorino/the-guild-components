@@ -13,11 +13,7 @@ export const Container = styled.div(({ isModalOpen }: IStyleProps) => [
       ${tw`outline-none!`}
     }
 
-    ${isModalOpen
-      ? `
-      backdrop-filter: blur(2px);
-    `
-      : tw`invisible`}
+    ${isModalOpen ? `backdrop-filter: blur(2px);` : tw`invisible`}
   `,
 ]);
 
@@ -112,10 +108,4 @@ export const Body = styled.div(() => [
       ${tw`dark:(bg-gray-500 border-gray-900) bg-gray-300 border-solid border-3 border-white rounded`}
     }
   `,
-]);
-
-export const CloseButton = styled.button(() => [
-  tw`absolute top-6 right-6 flex justify-center items-center p-1.5`,
-  tw`dark:bg-gray-700 bg-gray-200 border border-2 border-transparent rounded-lg cursor-pointer outline-none! hocus:(border-gray-500)`,
-  tw`transition duration-200 ease-in-out`,
 ]);

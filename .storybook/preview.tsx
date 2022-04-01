@@ -1,5 +1,6 @@
 import { ThemeProvider } from '../packages/components/src/helpers/theme';
 import { GlobalStyles } from '../packages/components/src/helpers/styles';
+import '../packages/components/src/static/styles.css';
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },

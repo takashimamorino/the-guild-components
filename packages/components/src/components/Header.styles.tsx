@@ -51,14 +51,6 @@ export const Controls = styled.menu(() => [
   `,
 ]);
 
-export const Logo = styled.a(() => [
-  css`
-    img {
-      ${tw`first-of-type:(hidden md:block) last:(md:hidden)`}
-    }
-  `,
-]);
-
 export const Link = styled.a(({ accentColor, isActiveLink }: IStyleProps) => [
   tw`flex mx-auto py-3 w-max font-medium text-base text-center no-underline!`,
   tw`sm:(text-lg py-5)`,

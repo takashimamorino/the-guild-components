@@ -1,8 +1,7 @@
 import React from 'react';
-import { Story, Meta } from '@storybook/react/types-6-0';
-import { ISubheaderProps } from '../types/components';
+import type { Story, Meta } from '@storybook/react/types-6-0';
+import type { ISubheaderProps } from '../types/components';
 import { dummySubheader } from '../helpers/dummy';
-
 import { Subheader } from './Subheader';
 
 export default {

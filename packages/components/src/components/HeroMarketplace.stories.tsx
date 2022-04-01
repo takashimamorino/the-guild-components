@@ -1,7 +1,6 @@
 import React from 'react';
-import { Story, Meta } from '@storybook/react/types-6-0';
-import { IHeroMarketplaceProps } from '../types/components';
-
+import type { Story, Meta } from '@storybook/react/types-6-0';
+import type { IHeroMarketplaceProps } from '../types/components';
 import { HeroMarketplace } from './HeroMarketplace';
 import { dummyHeroMarketplace } from '../helpers/dummy';
 

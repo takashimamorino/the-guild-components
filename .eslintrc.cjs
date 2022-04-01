@@ -21,13 +21,29 @@ module.exports = {
   },
   rules: {
     'react/prop-types': 'off',
+    'react/react-in-jsx-scope': 'off', // import of react no longer required
     'tailwindcss/no-custom-classname': 'error', // set more strict to highlight in editor
     'tailwindcss/classnames-order': 'off', // conflicts with official prettier-plugin-tailwindcss and tailwind v3
   },
   settings: {
     tailwindcss: {
       config: 'tailwind.config.cjs',
-      whitelist: [],
+      whitelist: ['font-default'],
+    },
+    react: {
+      version: 'detect',
     },
   },
+  overrides: [
+    {
+      files: [
+        'postcss.config.js',
+        'rollup.config.js',
+        'scripts/canary-release.js',
+      ],
+      env: {
+        node: true,
+      },
+    },
+  ],
 };

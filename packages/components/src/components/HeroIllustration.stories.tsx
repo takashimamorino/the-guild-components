@@ -1,8 +1,7 @@
 import React from 'react';
-import { Story, Meta } from '@storybook/react/types-6-0';
-import { IHeroIllustrationProps } from '../types/components';
+import type { Story, Meta } from '@storybook/react/types-6-0';
+import type { IHeroIllustrationProps } from '../types/components';
 import { dummyHeroIllustration } from '../helpers/dummy';
-
 import { HeroIllustration } from './HeroIllustration';
 
 export default {

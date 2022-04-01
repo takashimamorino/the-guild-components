@@ -1,7 +1,6 @@
 import React from 'react';
-import { Story, Meta } from '@storybook/react/types-6-0';
-import { INewsletterProps } from '../types/components';
-
+import type { Story, Meta } from '@storybook/react/types-6-0';
+import type { INewsletterProps } from '../types/components';
 import { Newsletter } from './Newsletter';
 
 export default {

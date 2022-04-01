@@ -9,7 +9,7 @@
     "next:build": "cd examples/nextjs && yarn build && yarn start",
     "prettier": "prettier --ignore-path .gitignore --write --list-different .",
     "prettier:check": "prettier --ignore-path .gitignore --check .",
-    "lint-check": "eslint \"packages/*/src/**/*.{ts,tsx}\"",
+    "lint": "eslint --ignore-path .gitignore .",
     "type-check": "tsc",
     "type-check:watch": "tsc --watch",
     "prepare": "husky install",
@@ -92,5 +92,8 @@
   },
   "resolutions": {
     "stylis": "4.0.13"
+  },
+  "dependencies": {
+    "clsx": "1.1.1"
   }
 }

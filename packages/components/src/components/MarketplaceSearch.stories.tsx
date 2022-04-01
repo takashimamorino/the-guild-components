@@ -1,8 +1,7 @@
 import React from 'react';
-import { Story, Meta } from '@storybook/react/types-6-0';
-import { IMarketplaceSearchProps } from '../types/components';
+import type { Story, Meta } from '@storybook/react/types-6-0';
+import type { IMarketplaceSearchProps } from '../types/components';
 import { dummyMarketplaceSearch } from '../helpers/dummy';
-
 import { MarketplaceSearch } from './MarketplaceSearch';
 
 export default {

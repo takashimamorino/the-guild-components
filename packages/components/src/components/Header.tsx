@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-
 import { HeaderModal } from './HeaderModal';
 import { SearchBar } from './SearchBar';
-
 import {
   Wrapper,
   Container,
@@ -11,13 +9,32 @@ import {
   Icon,
   Controls,
   Side,
-  Logo,
 } from './Header.styles';
-
-import { IHeaderProps } from '../types/components';
+import type { IHeaderProps } from '../types/components';
 import { useThemeContext } from '../helpers/theme';
 import { headerThemedIcons, logoThemedIcons } from '../helpers/assets';
 import { toggleLockBodyScroll } from '../helpers/modals';
+
+const renderLinkOptions = (
+  href: string,
+  onClick?: React.MouseEventHandler<HTMLAnchorElement>
+) => {
+  if (onClick) {
+    return {
+      href,
+      onClick(e: React.MouseEvent<HTMLAnchorElement>) {
+        e.preventDefault();
+        onClick(e);
+      },
+    };
+  }
+
+  return {
+    href: `https://the-guild.dev${href}`,
+    target: '_blank',
+    rel: 'noopener noreferrer',
+  };
+};
 
 export const Header: React.FC<IHeaderProps> = ({
   accentColor,
@@ -39,27 +56,6 @@ export const Header: React.FC<IHeaderProps> = ({
   const handleNav = (state: boolean) => {
     toggleLockBodyScroll(state);
     setMobileNavOpen(state);
-  };
-
-  const renderLinkOptions = (
-    href: string,
-    onClick?: React.MouseEventHandler<HTMLAnchorElement>
-  ) => {
-    if (onClick) {
-      return {
-        href,
-        onClick(e: React.MouseEvent<HTMLAnchorElement>) {
-          e.preventDefault();
-          onClick(e);
-        },
-      };
-    }
-    const rootURL = 'https://the-guild.dev';
-    return {
-      rel: 'noopener noreferrer',
-      target: '_blank',
-      href: `${rootURL}${href}`,
-    };
   };
 
   const links = [
@@ -96,18 +92,26 @@ export const Header: React.FC<IHeaderProps> = ({
             onClick={() => handleNav(true)}
             {...restProps.navOpenButtonProps}
           >
-            <img src={icons.menu} height="24" width="24" alt="Search icon" />
+            <img src={icons.menu} className="h-6 w-6" alt="Search icon" />
           </Icon>
         </Side>
 
-        <Logo
+        <a
           {...renderLinkOptions('/', onLinkClick)}
           title="View our website"
           {...restProps.logoProps}
         >
-          <img src={logos.logoFull} height="30" alt="The Guild Logo" />
-          <img src={logos.logoMono} height="38" alt="The Guild Monogram" />
-        </Logo>
+          <img
+            src={logos.logoFull}
+            className="hidden h-[30px] md:block"
+            alt="The Guild Logo"
+          />
+          <img
+            src={logos.logoMono}
+            className="h-[38px] md:hidden"
+            alt="The Guild Monogram"
+          />
+        </a>
 
         <Navigation isModalOpen={mobileNavOpen} {...restProps.navigationProps}>
           <Icon

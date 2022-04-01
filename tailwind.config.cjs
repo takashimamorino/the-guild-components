@@ -3,7 +3,7 @@ const colors = require('tailwindcss/colors');
 
 module.exports = {
   darkMode: 'class',
-  content: './packages/**/*.{html,ts,tsx}',
+  content: ['./packages/**/*.{html,ts,tsx}'],
   theme: {
     colors: {
       transparent: 'transparent',
@@ -52,7 +52,7 @@ module.exports = {
     },
   },
   plugins: [
-    plugin(({ addUtilities }) => {
+    plugin(({ addUtilities, addVariant }) => {
       const containerProps = {
         width: '100%',
         paddingLeft: '1.5rem',
@@ -77,7 +77,7 @@ module.exports = {
           fontFamily: 'TGCFont, sans-serif',
         },
       };
-
+      addVariant('hocus', ['&:hover', '&:focus']);
       addUtilities(newUtilities);
     }),
   ],
